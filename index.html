@@ -1,0 +1,740 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+input,select,button,textarea{font-family:inherit}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;min-height:100vh;background:var(--bg3)}
+
+/* ── THEMES ── */
+body.t-default{--bg:#fff;--bg2:#f4f3ef;--bg3:#eceae4;--tx:#1a1a18;--tx2:#5f5e5a;--tx3:#9a9890;--bd:rgba(0,0,0,0.1);--bd2:rgba(0,0,0,0.18);--bd3:rgba(0,0,0,0.32);--acc:#185FA5;--acc2:#E6F1FB;--acc3:#0C447C;--nav:#ffffff;--navtx:#1a1a18;--navbd:rgba(0,0,0,0.1);--r:8px;--rl:11px}
+body.t-forest{--bg:#f5f8f2;--bg2:#eaf0e6;--bg3:#dce8d6;--tx:#182614;--tx2:#456040;--tx3:#7a9474;--bd:rgba(30,70,20,0.1);--bd2:rgba(30,70,20,0.2);--bd3:rgba(30,70,20,0.38);--acc:#2d6a2d;--acc2:#d6edcc;--acc3:#1a4a1a;--nav:#eaf0e6;--navtx:#182614;--navbd:rgba(30,70,20,0.12);--r:7px;--rl:10px}
+body.t-industrial{--bg:#f2f1ed;--bg2:#e7e5df;--bg3:#d8d5cc;--tx:#1c1b18;--tx2:#52504a;--tx3:#888070;--bd:rgba(0,0,0,0.13);--bd2:rgba(0,0,0,0.24);--bd3:rgba(0,0,0,0.42);--acc:#c45a00;--acc2:#fce8d5;--acc3:#7a3200;--nav:#1c1b18;--navtx:#e8e6e0;--navbd:rgba(255,255,255,0.08);--r:3px;--rl:4px}
+body.t-night{--bg:#16181d;--bg2:#1e2128;--bg3:#0f1014;--tx:#e8eaf0;--tx2:#9098aa;--tx3:#58606e;--bd:rgba(255,255,255,0.07);--bd2:rgba(255,255,255,0.14);--bd3:rgba(255,255,255,0.25);--acc:#6c8ef5;--acc2:#1e2640;--acc3:#a8bcff;--nav:#0d0f13;--navtx:#d8dce8;--navbd:rgba(255,255,255,0.07);--r:9px;--rl:13px}
+body.t-craft{--bg:#fdf8f0;--bg2:#f5ede0;--bg3:#ede3d4;--tx:#2c1f0e;--tx2:#7a5c3a;--tx3:#a88060;--bd:rgba(100,60,20,0.1);--bd2:rgba(100,60,20,0.22);--bd3:rgba(100,60,20,0.38);--acc:#8b4513;--acc2:#f5e0c8;--acc3:#5c2a08;--nav:#2c1f0e;--navtx:#f0e4d0;--navbd:rgba(255,255,255,0.07);--r:5px;--rl:8px}
+
+.wrap{max-width:780px;margin:0 auto;padding:0 0 40px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* ── NAV ── */
+.nav{background:var(--nav);border-bottom:0.5px solid var(--navbd);padding:0 20px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:10}
+.nav-brand{font-size:14px;font-weight:500;color:var(--navtx);padding:13px 0;margin-right:20px;white-space:nowrap}
+.nav-tabs{display:flex;gap:0;flex:1}
+.nav-tab{padding:13px 14px;font-size:13px;color:var(--tx2);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;margin-bottom:-0.5px;transition:color .12s,border-color .12s;white-space:nowrap}
+.nav-tab:hover{color:var(--tx)}
+.nav-tab.active{color:var(--acc);border-bottom-color:var(--acc);font-weight:500}
+.nav-right{display:flex;align-items:center;gap:8px;padding:8px 0}
+.nav-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;cursor:pointer;flex-shrink:0}
+.nav-name{font-size:12px;color:var(--tx2);cursor:pointer;white-space:nowrap}
+.nav-signout{font-size:12px;color:var(--tx3);cursor:pointer;padding:4px 8px;border-radius:var(--r);border:0.5px solid transparent;background:transparent}
+.nav-signout:hover{color:var(--tx2);border-color:var(--bd2);background:var(--bg2)}
+
+/* ── THEME BAR ── */
+.theme-bar{background:var(--bg2);border-bottom:0.5px solid var(--bd);padding:8px 20px;display:flex;align-items:center;gap:10px}
+.theme-lbl{font-size:11px;color:var(--tx3);font-weight:500;letter-spacing:.04em;flex-shrink:0}
+.theme-opts{display:flex;gap:6px}
+.theme-opt{width:42px;height:28px;border-radius:6px;cursor:pointer;border:1.5px solid transparent;overflow:hidden;transition:border-color .12s;flex-shrink:0;position:relative}
+.theme-opt.active{border-color:var(--acc)}
+.theme-opt:not(.active){border-color:var(--bd2)}
+.theme-opt:hover:not(.active){border-color:var(--bd3)}
+.theme-opt-nav{height:9px;width:100%}
+.theme-opt-body{flex:1;display:flex;align-items:center;padding:3px 4px;gap:2px}
+.theme-opt-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.theme-opt-line{height:3px;border-radius:2px;flex:1}
+.theme-name{font-size:10px;color:var(--tx3)}
+
+/* ── CONTENT ── */
+.content{padding:20px}
+
+/* ── STATS ── */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:18px}
+.stat{background:var(--bg);border:0.5px solid var(--bd);border-radius:var(--r);padding:12px 14px}
+.stat-n{font-size:22px;font-weight:500;color:var(--tx);line-height:1}
+.stat-l{font-size:11px;color:var(--tx2);margin-top:4px;display:flex;align-items:center;gap:4px}
+.stat-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ── SEARCH / FILTER ── */
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:160px}
+.search-wrap input{width:100%;height:34px;padding:0 10px 0 32px;border:0.5px solid var(--bd2);border-radius:var(--r);background:var(--bg);color:var(--tx);font-size:13px}
+.search-wrap input:focus{outline:none;border-color:var(--acc)}
+.search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--tx3);font-size:13px;pointer-events:none}
+.chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.chip{height:28px;padding:0 12px;border-radius:20px;font-size:12px;border:0.5px solid var(--bd2);background:var(--bg);color:var(--tx2);cursor:pointer;display:inline-flex;align-items:center;transition:all .1s}
+.chip:hover{border-color:var(--acc);color:var(--acc3)}
+.chip.on{background:var(--acc2);border-color:var(--acc);color:var(--acc3);font-weight:500}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 14px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx);transition:all .1s;white-space:nowrap}
+.btn:hover{background:var(--bg);border-color:var(--bd3)}
+.btn.pri{background:var(--acc2);border-color:var(--acc);color:var(--acc3)}
+.btn.pri:hover{background:var(--acc);color:#fff}
+.btn.ok{background:#EAF3DE;border-color:#3B6D11;color:#27500A}
+.btn.ok:hover{background:#3B6D11;color:#fff}
+.btn.bad{background:#FCEBEB;border-color:#A32D2D;color:#791F1F}
+.btn.bad:hover{background:#A32D2D;color:#fff}
+.btn.ghost{background:transparent;border-color:transparent;color:var(--tx2)}
+.btn.ghost:hover{background:var(--bg2);border-color:var(--bd)}
+.btn.sm{height:26px;padding:0 10px;font-size:11px}
+
+/* ── TOOL GRID ── */
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:9px;margin-bottom:2px}
+.tool-card{background:var(--bg);border:0.5px solid var(--bd);border-radius:var(--rl);padding:12px 13px;cursor:pointer;position:relative;transition:border-color .1s}
+.tool-card:hover{border-color:var(--bd3)}
+.tool-card:hover .tc-x{display:flex}
+.tool-card.sel{border:1.5px solid var(--acc);background:var(--acc2)}
+.tool-card.st-m{border-left:3px solid #E24B4A}
+.tool-card.st-o{border-left:3px solid #BA7517}
+.tool-card.st-a{border-left:3px solid #3B6D11}
+.tc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:4px}
+.tc-name{font-size:13px;font-weight:500;color:var(--tx);line-height:1.3}
+.tc-cat{font-size:11px;color:var(--tx3);margin-bottom:7px}
+.tc-loc{font-size:11px;color:var(--acc);background:var(--acc2);padding:2px 7px;border-radius:4px;display:inline-block}
+.tc-foot{display:flex;align-items:center;gap:5px;margin-top:8px;padding-top:8px;border-top:0.5px solid var(--bd);font-size:11px;color:var(--tx2)}
+.tc-x{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;border:0.5px solid var(--bd2);background:var(--bg2);color:var(--tx2);font-size:13px;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:2;line-height:1}
+
+/* ── BADGES ── */
+.badge{font-size:10px;padding:2px 7px;border-radius:7px;font-weight:500;display:inline-block;white-space:nowrap}
+.badge.available{background:#EAF3DE;color:#27500A}
+.badge.checked-out{background:#FAEEDA;color:#854F0B}
+.badge.missing{background:#FCEBEB;color:#A32D2D}
+.badge.admin{background:#EEEDFE;color:#3C3489}
+.badge.instructor{background:#E6F1FB;color:#0C447C}
+.badge.student{background:var(--bg2);color:var(--tx2)}
+.badge.team{background:#EEEDFE;color:#3C3489}
+.tpill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;border:0.5px solid}
+.cdot{width:7px;height:7px;border-radius:50%;display:inline-block;flex-shrink:0}
+
+/* ── DETAIL ── */
+.detail{background:var(--bg);border:0.5px solid var(--bd2);border-radius:var(--rl);padding:16px 18px;margin-bottom:14px}
+.detail-hd{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.detail-name{font-size:15px;font-weight:500;color:var(--tx)}
+.detail-meta{font-size:12px;color:var(--tx2);margin-top:2px}
+.detail-2col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.df label{font-size:10px;color:var(--tx3);display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em}
+.df span{font-size:13px;font-weight:500;color:var(--tx)}
+.acct{background:var(--bg2);border-radius:var(--r);padding:12px 14px;margin-bottom:12px}
+.acct-lbl{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.acct-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px}
+.acct-item-lbl{font-size:11px;color:var(--tx2);margin-bottom:4px}
+.detail-acts{display:flex;gap:6px;flex-wrap:wrap}
+.recent-lbl{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px;border-top:0.5px solid var(--bd);padding-top:10px}
+.log-micro{display:flex;gap:8px;margin-bottom:5px}
+.ldot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.ldot.checkout{background:#BA7517}.ldot.return{background:#3B6D11}.ldot.missing{background:#A32D2D}.ldot.found{background:#185FA5}.ldot.added{background:#534AB7}.ldot.deleted{background:#888780}
+
+/* ── LOG ── */
+.log-list{background:var(--bg);border:0.5px solid var(--bd);border-radius:var(--rl);padding:0 18px}
+.log-row{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:0.5px solid var(--bd)}
+.log-row:last-child{border-bottom:none}
+
+/* ── GROUPS ── */
+.gc{background:var(--bg);border:0.5px solid var(--bd);border-radius:var(--rl);padding:14px 18px;margin-bottom:10px}
+.gc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;gap:8px;flex-wrap:wrap}
+.gc-name{font-size:14px;font-weight:500;color:var(--tx)}
+.gc-code{font-family:monospace;font-size:11px;padding:2px 8px;background:var(--bg2);border-radius:var(--r);color:var(--tx2);border:0.5px solid var(--bd)}
+.gc-meta{font-size:12px;color:var(--tx2);margin-bottom:9px}
+.mchips{display:flex;gap:5px;flex-wrap:wrap}
+.mchip{display:flex;align-items:center;gap:4px;padding:3px 9px;background:var(--bg2);border-radius:20px;font-size:11px;color:var(--tx2);border:0.5px solid var(--bd)}
+.sub-section{margin-top:10px;padding-top:10px;border-top:0.5px solid var(--bd)}
+.sub-lbl{font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+.sgc{background:var(--bg2);border:0.5px solid var(--bd);border-radius:var(--r);padding:10px 12px;margin-bottom:6px}
+
+/* ── USERS ── */
+.user-list{background:var(--bg);border:0.5px solid var(--bd);border-radius:var(--rl);padding:0 18px}
+.user-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--bd)}
+.user-row:last-child{border-bottom:none}
+.uav{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.av-blue{background:#E6F1FB;color:#0C447C}.av-purple{background:#EEEDFE;color:#3C3489}
+.av-teal{background:#E1F5EE;color:#085041}.av-coral{background:#FAECE7;color:#712B13}.av-amber{background:#FAEEDA;color:#633806}
+
+/* ── MAP ── */
+.map-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.zone{border-radius:var(--r);padding:10px 12px;border:0.5px solid var(--bd);background:var(--bg)}
+.zone.zm{border:1.5px solid #E24B4A;background:#fff9f9}
+.zone.zh{border:1.5px solid var(--acc);background:var(--acc2)}
+.zone-name{font-size:12px;font-weight:500;color:var(--tx);margin-bottom:5px}
+.zone-item{font-size:11px;color:var(--tx2);padding:1px 0;line-height:1.6}
+
+/* ── INNER TABS ── */
+.itabs{display:flex;gap:0;border-bottom:0.5px solid var(--bd);margin-bottom:14px}
+.itab{padding:8px 16px;font-size:13px;cursor:pointer;border:none;background:transparent;color:var(--tx2);border-bottom:2px solid transparent;margin-bottom:-0.5px;transition:all .12s}
+.itab.on{color:var(--acc);border-bottom-color:var(--acc);font-weight:500}
+.itab:hover{color:var(--tx)}
+
+/* ── AUTH ── */
+.auth-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg3);padding:1rem}
+.auth-card{background:var(--bg);border:0.5px solid var(--bd);border-radius:var(--rl);padding:26px 28px;width:100%;max-width:400px}
+.auth-title{font-size:16px;font-weight:500;color:var(--tx);margin-bottom:2px}
+.auth-sub{font-size:12px;color:var(--tx2);margin-bottom:18px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em}
+.field input,.field select{width:100%;height:36px;padding:0 11px;border:0.5px solid var(--bd2);border-radius:var(--r);background:var(--bg);color:var(--tx);font-size:13px}
+.field input:focus,.field select:focus{outline:none;border-color:var(--acc)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.err{font-size:11px;color:#A32D2D;margin-top:4px}
+.ok{font-size:11px;color:#3B6D11;margin-top:4px}
+.divider{height:0.5px;background:var(--bd);margin:16px 0}
+.hint-box{border:0.5px dashed var(--bd2);border-radius:var(--r);padding:8px 10px;font-size:11px;color:var(--tx2);margin-top:6px}
+
+/* ── MODAL ── */
+.modal-bg{position:absolute;inset:0;background:rgba(0,0,0,0.36);display:flex;align-items:flex-start;justify-content:center;z-index:50;padding:36px 16px;min-height:460px}
+.modal{background:var(--bg);border-radius:var(--rl);border:0.5px solid var(--bd2);padding:20px 22px;width:100%;max-width:400px;max-height:80vh;overflow-y:auto}
+.modal-title{font-size:15px;font-weight:500;color:var(--tx);margin-bottom:14px}
+.modal-foot{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+
+/* ── MISC ── */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#2C2C2A;color:#F1EFE8;padding:9px 18px;border-radius:var(--r);font-size:12px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:200;white-space:nowrap}
+.toast.show{opacity:1}
+.empty{padding:32px 16px;text-align:center;color:var(--tx2);font-size:13px}
+.empty small{display:block;color:var(--tx3);font-size:12px;margin-top:4px}
+.ph{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:8px;flex-wrap:wrap}
+.ph-title{font-size:15px;font-weight:500;color:var(--tx)}
+.ph-acts{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+@media(max-width:500px){.stats{grid-template-columns:repeat(2,1fr)}.map-grid{grid-template-columns:repeat(2,1fr)}.field-row{grid-template-columns:1fr}.detail-2col{grid-template-columns:1fr}.acct-2{grid-template-columns:1fr}}
+</style>
+
+<div id="root"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const THEMES={
+  default:{label:"Default",nav:"#185FA5",body:"#eceae4",acc:"#185FA5"},
+  forest: {label:"Forest", nav:"#2d6a2d",body:"#dce8d6",acc:"#2d6a2d"},
+  industrial:{label:"Industrial",nav:"#1c1b18",body:"#d8d5cc",acc:"#c45a00"},
+  night:  {label:"Night",  nav:"#0d0f13",body:"#0f1014",acc:"#6c8ef5"},
+  craft:  {label:"Craft",  nav:"#2c1f0e",body:"#ede3d4",acc:"#8b4513"},
+};
+const GC=['#378ADD','#1D9E75','#D85A30','#7F77DD','#BA7517','#D4537E'];
+const SC=['#7F77DD','#D85A30','#1D9E75','#D4537E','#BA7517','#378ADD'];
+const AV=['av-blue','av-teal','av-coral','av-purple','av-amber'];
+
+const db={
+  users:[
+    {id:1,name:"Prof. Chen",email:"chen@workshop.edu",role:"instructor",groups:[1,2],initials:"PC",av:"av-purple"},
+    {id:2,name:"Maya R.",email:"maya@students.edu",role:"student",groups:[1],initials:"MR",av:"av-blue"},
+    {id:3,name:"Jordan K.",email:"jordan@students.edu",role:"student",groups:[1],initials:"JK",av:"av-teal"},
+    {id:4,name:"Sam W.",email:"sam@students.edu",role:"student",groups:[2],initials:"SW",av:"av-coral"},
+    {id:5,name:"Admin",email:"admin@workshop.edu",role:"admin",groups:[1,2],initials:"AD",av:"av-amber"},
+    {id:6,name:"Riley B.",email:"riley@students.edu",role:"student",groups:[1],initials:"RB",av:"av-blue"},
+    {id:7,name:"Alex D.",email:"alex@students.edu",role:"student",groups:[1],initials:"AD",av:"av-teal"},
+  ],
+  groups:[
+    {id:1,name:"Intro to Woodworking",code:"WOOD-101",color:GC[0],instructor:1,members:[1,2,3,5,6,7],description:"Mon/Wed 9–11am"},
+    {id:2,name:"Advanced Fabrication",code:"FAB-301",color:GC[1],instructor:1,members:[1,4,5],description:"Tue/Thu 2–4pm"},
+  ],
+  subgroups:[
+    {id:1,name:"Team Maple",code:"TM-01",parentGroup:1,createdBy:2,color:SC[0],members:[2,3],description:"Cabinet project"},
+    {id:2,name:"Team Oak",code:"TM-02",parentGroup:1,createdBy:6,color:SC[1],members:[6,7],description:"Shelf project"},
+  ],
+  tools:[
+    {id:1,name:"Cordless drill",cat:"Power",location:"Station A – Shelf 2",zone:"A",status:"available",lastUser:"Jordan K.",lastUserId:3,coBy:null,coTeam:null,group:null,sub:null},
+    {id:2,name:"Circular saw",cat:"Power",location:"Station A – Shelf 1",zone:"A",status:"checked-out",lastUser:"Team Maple",lastUserId:null,coBy:2,coTeam:1,group:1,sub:1},
+    {id:3,name:"Jigsaw",cat:"Power",location:"Station A – Shelf 1",zone:"A",status:"available",lastUser:"Jordan K.",lastUserId:3,coBy:null,coTeam:null,group:null,sub:null},
+    {id:4,name:"Orbital sander",cat:"Power",location:"Station B – Shelf 3",zone:"B",status:"missing",lastUser:"Jordan K.",lastUserId:3,coBy:null,coTeam:null,group:1,sub:null},
+    {id:5,name:"Bench vise",cat:"Clamping",location:"Station B – Bench",zone:"B",status:"available",lastUser:null,lastUserId:null,coBy:null,coTeam:null,group:null,sub:null},
+    {id:6,name:"C-clamps (set)",cat:"Clamping",location:"Station B – Shelf 1",zone:"B",status:"checked-out",lastUser:"Sam W.",lastUserId:4,coBy:4,coTeam:null,group:2,sub:null},
+    {id:7,name:"Hammer",cat:"Hand",location:"Station C – Pegboard",zone:"C",status:"available",lastUser:null,lastUserId:null,coBy:null,coTeam:null,group:null,sub:null},
+    {id:8,name:"Chisels (set)",cat:"Hand",location:"Station C – Pegboard",zone:"C",status:"available",lastUser:"Team Maple",lastUserId:null,coBy:null,coTeam:null,group:null,sub:null},
+    {id:9,name:"Hand saw",cat:"Hand",location:"Station C – Shelf 2",zone:"C",status:"missing",lastUser:"Sam W.",lastUserId:4,coBy:null,coTeam:null,group:2,sub:null},
+    {id:10,name:"Tape measure",cat:"Measuring",location:"Station D – Bin 1",zone:"D",status:"available",lastUser:null,lastUserId:null,coBy:null,coTeam:null,group:null,sub:null},
+    {id:11,name:"Combination square",cat:"Measuring",location:"Station D – Bin 2",zone:"D",status:"checked-out",lastUser:"Team Maple",lastUserId:null,coBy:3,coTeam:1,group:1,sub:1},
+    {id:12,name:"Level",cat:"Measuring",location:"Station D – Shelf 1",zone:"D",status:"available",lastUser:null,lastUserId:null,coBy:null,coTeam:null,group:null,sub:null},
+    {id:13,name:"Router",cat:"Power",location:"Station E – Cabinet",zone:"E",status:"available",lastUser:null,lastUserId:null,coBy:null,coTeam:null,group:null,sub:null},
+    {id:14,name:"Safety goggles",cat:"Safety",location:"Station F – Hook 1",zone:"F",status:"missing",lastUser:"Maya R.",lastUserId:2,coBy:null,coTeam:null,group:1,sub:null},
+  ],
+  toolboxes:[
+    {id:101,name:"Woodworking Toolbox A",cat:"Toolbox",location:"Station A – Cabinet",zone:"A",status:"checked-out",lastUser:"Team Oak",lastUserId:null,coBy:6,coTeam:2,group:1,sub:2,contents:["Hand plane","Card scraper","Marking gauge","Mortise chisel set"]},
+    {id:102,name:"Measuring Toolbox B",cat:"Toolbox",location:"Station D – Cabinet",zone:"D",status:"available",lastUser:null,lastUserId:null,coBy:null,coTeam:null,group:null,sub:null,contents:["Combination square","Digital calipers","Marking knife","Steel rule"]},
+    {id:103,name:"Finishing Toolbox C",cat:"Toolbox",location:"Station B – Cabinet",zone:"B",status:"available",lastUser:"Team Maple",lastUserId:null,coBy:null,coTeam:null,group:null,sub:null,contents:["Random orbit sander","Sanding blocks","Scraper set"]},
+  ],
+  zones:{A:"Station A",B:"Station B",C:"Station C",D:"Station D",E:"Station E",F:"Station F"},
+  log:[
+    {type:"checkout",toolId:2,toolName:"Circular saw",userId:2,userName:"Maya R.",teamId:1,teamName:"Team Maple",group:"Intro to Woodworking",time:"Today, 9:14am"},
+    {type:"checkout",toolId:11,toolName:"Combination square",userId:3,userName:"Jordan K.",teamId:1,teamName:"Team Maple",group:"Intro to Woodworking",time:"Today, 9:22am"},
+    {type:"checkout",toolId:101,toolName:"Woodworking Toolbox A",userId:6,userName:"Riley B.",teamId:2,teamName:"Team Oak",group:"Intro to Woodworking",time:"Today, 8:55am"},
+    {type:"missing",toolId:4,toolName:"Orbital sander",userId:3,userName:"Jordan K.",teamId:null,teamName:null,group:null,time:"Yesterday, 3:45pm"},
+    {type:"return",toolId:1,toolName:"Cordless drill",userId:3,userName:"Jordan K.",teamId:1,teamName:"Team Maple",group:null,time:"Yesterday, 2:00pm"},
+    {type:"missing",toolId:9,toolName:"Hand saw",userId:4,userName:"Sam W.",teamId:null,teamName:null,group:null,time:"Yesterday, 4:10pm"},
+  ]
+};
+
+let CU=null,theme="default";
+let S={tab:"inventory",sel:null,filter:"all",search:"",grpTab:"class",logUser:"all",modal:null,md:{}};
+
+const avCls=i=>AV[i%AV.length];
+const ftime=()=>{const n=new Date(),h=n.getHours();return"Today, "+(h%12||12)+":"+String(n.getMinutes()).padStart(2,"0")+(h<12?"am":"pm")};
+const alog=e=>db.log.unshift({...e,time:ftime()});
+const allItems=()=>db.tools.concat(db.toolboxes);
+const findItem=id=>allItems().find(t=>t.id===id);
+const canMgr=()=>CU&&(CU.role==="admin"||CU.role==="instructor");
+
+function tpill(sg,sm){
+  if(!sg)return"";
+  const s=sm?"font-size:10px;padding:1px 7px":"font-size:11px;padding:3px 9px";
+  return`<span class="tpill" style="background:${sg.color}15;border-color:${sg.color}40;color:${sg.color};${s}"><span class="cdot" style="background:${sg.color};width:6px;height:6px"></span>${sg.name}</span>`;
+}
+function bdg(s){return`<span class="badge ${s}">${s.replace("-"," ")}</span>`}
+function toast(m){const el=document.getElementById("toast");el.textContent=m;el.classList.add("show");clearTimeout(window._tt);window._tt=setTimeout(()=>el.classList.remove("show"),2800)}
+function setTheme(t){theme=t;document.body.className="t-"+t}
+
+function themeBar(){
+  return`<div class="theme-bar"><span class="theme-lbl">Theme</span><div class="theme-opts">`
+    +Object.entries(THEMES).map(([id,t])=>{
+      const actv=theme===id;
+      return`<div class="theme-opt${actv?" active":""}" onclick="setTheme('${id}');render()" title="${t.label}">`
+        +`<div class="theme-opt-nav" style="background:${t.nav}"></div>`
+        +`<div style="display:flex;align-items:center;padding:3px 4px;gap:2px;flex:1;background:${t.body}">`
+        +`<div class="theme-opt-dot" style="background:${t.acc}"></div>`
+        +`<div class="theme-opt-line" style="background:${t.acc}55"></div>`
+        +`</div></div>`;
+    }).join("")
+    +`</div><span class="theme-name">${THEMES[theme].label}</span></div>`;
+}
+
+function render(){
+  document.getElementById("root").innerHTML=CU?renderApp():renderAuth();
+  setTheme(theme);
+  const ex=document.getElementById("mroot");if(ex)ex.remove();
+  if(S.modal){
+    const ov=document.createElement("div");
+    ov.id="mroot";ov.className="modal-bg";
+    ov.innerHTML=renderModal();
+    ov.addEventListener("click",e=>{if(e.target===ov)closeModal()});
+    document.getElementById("root").appendChild(ov);
+  }
+}
+
+/* AUTH */
+function renderAuth(){
+  return`<div class="auth-shell"><div class="auth-card">
+    <div class="auth-title">Workshop inventory</div>
+    <div class="auth-sub">Sign in to continue</div>
+    <div class="field"><label>Email</label><input id="em" type="email" value="maya@students.edu"></div>
+    <div class="field"><label>Password</label><input id="pw" type="password" value="password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div id="aerr" class="err"></div>
+    <button class="btn pri" style="width:100%;height:36px;justify-content:center;margin-top:6px" onclick="doLogin()">Sign in</button>
+    <div class="divider"></div>
+    <div style="font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Theme</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px">`
+    +Object.entries(THEMES).map(([id,t])=>`
+      <div onclick="setTheme('${id}');render()" style="cursor:pointer;border-radius:7px;overflow:hidden;border:1.5px solid ${theme===id?"var(--acc)":"var(--bd2)"};transition:border-color .12s">
+        <div style="width:52px;height:32px;background:${t.body}"><div style="height:10px;background:${t.nav}"></div><div style="padding:4px 5px;display:flex;gap:3px;align-items:center"><div style="width:7px;height:7px;border-radius:50%;background:${t.acc}"></div><div style="height:3px;border-radius:2px;background:${t.acc}55;flex:1"></div></div></div>
+        <div style="font-size:9px;text-align:center;padding:2px 0 3px;background:${t.nav};color:#fff">${t.label}</div>
+      </div>`).join("")
+    +`</div>
+    <div style="font-size:11px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">Quick login</div>`
+    +db.users.map(u=>`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:12px;color:var(--tx2)">${u.name} <span class="badge ${u.role}">${u.role}</span></span><button class="btn sm" onclick="quickLogin(${u.id})">Sign in</button></div>`).join("")
+    +`</div></div>`;
+}
+
+/* APP */
+function renderApp(){
+  const tabs=CU.role==="student"?["inventory","groups","log","map"]:["inventory","groups","users","log","map"];
+  return`<div class="wrap">`
+    +themeBar()
+    +`<div class="nav">
+      <div class="nav-brand">Workshop</div>
+      <div class="nav-tabs">`
+    +tabs.map(t=>`<button class="nav-tab${S.tab===t?" active":""}" onclick="S.tab='${t}';S.sel=null;render()">${t[0].toUpperCase()+t.slice(1)}</button>`).join("")
+    +`</div><div class="nav-right">
+      <div class="nav-avatar uav ${CU.av}" onclick="S.modal='profile';render()" title="${CU.name}">${CU.initials}</div>
+      <span class="nav-name" onclick="S.modal='profile';render()">${CU.name}</span>
+      <button class="nav-signout" onclick="CU=null;S.tab='inventory';render()">Sign out</button>
+    </div></div>
+    <div class="content">`
+    +(S.tab==="inventory"?renderInventory():"")
+    +(S.tab==="groups"?renderGroups():"")
+    +(S.tab==="users"&&CU.role!=="student"?renderUsers():"")
+    +(S.tab==="log"?renderLog():"")
+    +(S.tab==="map"?renderMap():"")
+    +`</div></div>`;
+}
+
+/* INVENTORY */
+function renderInventory(){
+  const items=allItems();
+  const cats=[...new Set(db.tools.map(t=>t.cat))];
+  const filters=[{l:"All",v:"all"},{l:"Available",v:"available"},{l:"Out",v:"checked-out"},{l:"Missing",v:"missing"},{l:"Toolboxes",v:"Toolbox"},...cats.map(c=>({l:c,v:c}))];
+  const list=items.filter(t=>{
+    const q=S.search.toLowerCase();
+    return(!q||t.name.toLowerCase().includes(q)||t.cat.toLowerCase().includes(q)||t.location.toLowerCase().includes(q))
+      &&(S.filter==="all"||t.status===S.filter||t.cat===S.filter);
+  });
+  const sel=S.sel?findItem(S.sel):null;
+  const avail=items.filter(t=>t.status==="available").length;
+  const out=items.filter(t=>t.status==="checked-out").length;
+  const miss=items.filter(t=>t.status==="missing").length;
+
+  let detail="";
+  if(sel){
+    const team=sel.coTeam?db.subgroups.find(sg=>sg.id===sel.coTeam):null;
+    const lastTeam=sel.sub&&!sel.coTeam?db.subgroups.find(sg=>sg.id===sel.sub):null;
+    const coU=sel.coBy?db.users.find(u=>u.id===sel.coBy):null;
+    const tlog=db.log.filter(e=>e.toolId===sel.id).slice(0,4);
+    const canRet=sel.status==="checked-out"&&(sel.coBy===CU.id||(team&&team.members.includes(CU.id))||canMgr());
+    const acts=[];
+    if(sel.status==="available") acts.push(`<button class="btn pri" onclick="S.modal='checkout';render()">Check out</button>`);
+    if(canRet) acts.push(`<button class="btn ok" onclick="returnItem(${sel.id})">Return</button>`);
+    if(sel.status!=="missing") acts.push(`<button class="btn bad" onclick="markMissing(${sel.id})">Report missing</button>`);
+    if(sel.status==="missing"&&canMgr()) acts.push(`<button class="btn ok" onclick="markFound(${sel.id})">Mark found</button>`);
+    if(canMgr()) acts.push(`<button class="btn ghost" onclick="S.modal='delTool';S.md={id:${sel.id}};render()">Delete</button>`);
+    acts.push(`<button class="btn ghost" onclick="S.sel=null;render()">Close</button>`);
+    detail=`<div class="detail">
+      <div class="detail-hd">
+        <div>
+          <div class="detail-name">${sel.name}${sel.cat==="Toolbox"?' <span class="badge" style="background:var(--acc2);color:var(--acc3)">toolbox</span>':""}</div>
+          <div class="detail-meta">${sel.cat} &middot; return to <span style="color:var(--acc)">${sel.location}</span></div>
+        </div>${bdg(sel.status)}</div>`
+      +(sel.cat==="Toolbox"?`<div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">${sel.contents.map(c=>`<span style="font-size:11px;padding:2px 8px;background:var(--bg2);border:0.5px solid var(--bd2);border-radius:5px;color:var(--tx2)">${c}</span>`).join("")}</div>`:"")
+      +`<div class="acct"><div class="acct-lbl">Accountability</div><div class="acct-2">
+        <div><div class="acct-item-lbl">Currently held by</div>`
+      +(team?`${tpill(team,false)}<div style="font-size:11px;color:var(--tx2);margin-top:4px">checked out by ${coU?coU.name:"team member"}</div>`
+        :coU?`<div style="display:flex;align-items:center;gap:7px"><div class="uav ${coU.av}" style="width:24px;height:24px;font-size:10px">${coU.initials}</div><span style="font-size:13px;font-weight:500;color:var(--tx)">${coU.name}</span></div>`
+        :`<span style="color:var(--tx3)">—</span>`)
+      +`</div><div><div class="acct-item-lbl">Last taken by</div>`
+      +(lastTeam?tpill(lastTeam,false):sel.lastUser?`<span style="font-size:13px;font-weight:500;color:var(--tx)">${sel.lastUser}</span>`:`<span style="color:var(--tx3)">No record</span>`)
+      +`</div></div>`
+      +(tlog.length?`<div class="recent-lbl">Recent activity</div>`+tlog.map(e=>{const tt=e.teamId?db.subgroups.find(sg=>sg.id===e.teamId):null;return`<div class="log-micro"><div class="ldot ${e.type}" style="margin-top:3px;flex-shrink:0"></div><div style="font-size:12px;color:var(--tx)">${tt?tpill(tt,true)+" ":""}<strong>${e.toolName}</strong> ${({checkout:"checked out",return:"returned",missing:"reported missing",found:"marked found"})[e.type]||e.type}<span style="color:var(--tx3)"> &middot; ${e.time}</span></div></div>`}).join(""):"")
+      +`</div><div class="detail-acts">${acts.join("")}</div></div>`;
+  }
+
+  return`<div class="ph"><div class="ph-title">Inventory</div><div class="ph-acts">${canMgr()?'<button class="btn pri" onclick="S.modal=\'addTool\';render()">+ Add tool</button>':""}</div></div>`
+    +`<div class="stats">
+      <div class="stat"><div class="stat-n">${items.length}</div><div class="stat-l">Total items</div></div>
+      <div class="stat"><div class="stat-n" style="color:#3B6D11">${avail}</div><div class="stat-l"><span class="stat-dot" style="background:#3B6D11"></span>Available</div></div>
+      <div class="stat"><div class="stat-n" style="color:#854F0B">${out}</div><div class="stat-l"><span class="stat-dot" style="background:#BA7517"></span>Checked out</div></div>
+      <div class="stat"><div class="stat-n" style="color:#A32D2D">${miss}</div><div class="stat-l"><span class="stat-dot" style="background:#E24B4A"></span>Missing</div></div>
+    </div>`
+    +`<div class="toolbar"><div class="search-wrap"><span class="search-ico">&#9906;</span><input value="${S.search}" placeholder="Search tools, categories, locations…" oninput="S.search=this.value;render()"></div></div>`
+    +`<div class="chips">${filters.map(f=>`<span class="chip${S.filter===f.v?" on":""}" onclick="S.filter='${f.v}';render()">${f.l}</span>`).join("")}</div>`
+    +detail
+    +`<div class="tool-grid">${list.length?list.map(t=>{
+      const team=t.coTeam?db.subgroups.find(sg=>sg.id===t.coTeam):null;
+      const coU=!team&&t.coBy?db.users.find(u=>u.id===t.coBy):null;
+      const sc=t.status==="missing"?"st-m":t.status==="checked-out"?"st-o":"st-a";
+      return`<div class="tool-card ${sc}${S.sel===t.id?" sel":""}" onclick="S.sel=${S.sel===t.id?null:t.id};render()">
+        ${canMgr()?`<button class="tc-x" onclick="event.stopPropagation();S.modal='delTool';S.md={id:${t.id}};render()">&#215;</button>`:""}
+        <div class="tc-top"><span class="tc-name">${t.name}${t.cat==="Toolbox"?' <span style="font-size:9px;background:var(--acc2);color:var(--acc3);padding:1px 5px;border-radius:3px">box</span>':""}</span>${bdg(t.status)}</div>
+        <div class="tc-cat">${t.cat}</div>
+        <div class="tc-loc">${t.location}</div>
+        ${team?`<div class="tc-foot">${tpill(team,true)}</div>`
+          :coU?`<div class="tc-foot"><div class="uav ${coU.av}" style="width:16px;height:16px;font-size:8px">${coU.initials}</div>${coU.name}</div>`
+          :t.lastUser?`<div class="tc-foot" style="color:var(--tx3)">Last: ${t.lastUser}</div>`:""}
+      </div>`;
+    }).join(""):`<div class="empty">No items match.<small>Try a different filter or search.</small></div>`}</div>`;
+}
+
+/* LOG */
+function renderLog(){
+  const users=["all",...new Set(db.log.map(e=>e.userName))];
+  const list=S.logUser==="all"?db.log:db.log.filter(e=>e.userName===S.logUser);
+  const tl={checkout:"checked out",return:"returned",missing:"reported missing",found:"marked found",added:"added",deleted:"deleted"};
+  return`<div class="ph"><div class="ph-title">Activity log</div><div class="ph-acts">
+    <select onchange="S.logUser=this.value;render()" style="height:32px;padding:0 10px;border:0.5px solid var(--bd2);border-radius:var(--r);background:var(--bg);color:var(--tx);font-size:12px">
+      ${users.map(u=>`<option value="${u}"${S.logUser===u?" selected":""}>${u==="all"?"All users":u}</option>`).join("")}
+    </select></div></div>
+    <div class="log-list">${list.length?list.map(e=>{
+      const u=db.users.find(x=>x.id===e.userId);
+      const team=e.teamId?db.subgroups.find(sg=>sg.id===e.teamId):null;
+      return`<div class="log-row"><div class="ldot ${e.type}" style="margin-top:4px;flex-shrink:0"></div><div style="flex:1">
+        <div style="font-size:13px;color:var(--tx)"><strong>${e.toolName}</strong> ${tl[e.type]||e.type}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:3px;flex-wrap:wrap">
+          ${team?tpill(team,true):""}
+          ${u?`<div class="uav ${u.av}" style="width:14px;height:14px;font-size:7px">${u.initials}</div>`:""}
+          <span style="font-size:11px;color:var(--tx2)">${team?"via ":""}${e.userName}${e.group?" &middot; "+e.group:""} &middot; ${e.time}</span>
+        </div></div></div>`;
+    }).join(""):`<div class="empty">No activity.</div>`}</div>`;
+}
+
+/* GROUPS */
+function renderGroups(){
+  const cm=canMgr();
+  return`<div class="ph"><div class="ph-title">Groups &amp; teams</div><div class="ph-acts">
+    <button class="btn" onclick="S.modal='joinGrp';render()">Join with code</button>
+    ${cm?'<button class="btn pri" onclick="S.modal=\'createGrp\';render()">+ Create group</button>':""}
+  </div></div>
+  <div class="itabs">
+    <button class="itab${S.grpTab==="class"?" on":""}" onclick="S.grpTab='class';render()">Class groups</button>
+    <button class="itab${S.grpTab==="teams"?" on":""}" onclick="S.grpTab='teams';render()">My teams</button>
+  </div>`
+  +(S.grpTab==="class"?renderClassGroups(cm):renderTeams());
+}
+
+function renderClassGroups(cm){
+  const myG=CU.role==="admin"?db.groups:db.groups.filter(g=>g.members.includes(CU.id));
+  if(!myG.length) return`<div class="empty">No class groups yet.<small>Join one with a class code.</small></div>`;
+  return myG.map(g=>{
+    const mems=db.users.filter(u=>g.members.includes(u.id));
+    const gout=allItems().filter(t=>t.group===g.id&&t.status==="checked-out");
+    const gmiss=allItems().filter(t=>t.group===g.id&&t.status==="missing");
+    const instr=db.users.find(u=>u.id===g.instructor);
+    const subs=db.subgroups.filter(sg=>sg.parentGroup===g.id);
+    return`<div class="gc">
+      <div class="gc-hd"><div style="display:flex;align-items:center;gap:7px"><div style="width:10px;height:10px;border-radius:2px;background:${g.color}"></div><span class="gc-name">${g.name}</span></div><span class="gc-code">${g.code}</span></div>
+      <div class="gc-meta">${g.description} &middot; ${instr?instr.name:"—"} &middot; ${mems.length} members${gout.length?` &middot; <span style="color:#854F0B">${gout.length} out</span>`:""}${gmiss.length?` &middot; <span style="color:#A32D2D">${gmiss.length} missing</span>`:""}</div>
+      <div class="mchips">${mems.map(m=>`<div class="mchip"><div class="uav ${m.av}" style="width:16px;height:16px;font-size:8px">${m.initials}</div>${m.name}</div>`).join("")}</div>
+      ${gmiss.length?`<div style="margin-top:9px;padding:7px 10px;background:#FCEBEB;border-radius:var(--r);font-size:11px;color:#A32D2D">Missing: ${gmiss.map(t=>t.name).join(", ")}</div>`:""}
+      ${subs.length?`<div class="sub-section"><div class="sub-lbl">Teams (${subs.length})</div>`
+        +subs.map(sg=>{
+          const sgM=db.users.filter(u=>sg.members.includes(u.id));
+          const isMine=sg.members.includes(CU.id);
+          const sgOut=allItems().filter(t=>t.coTeam===sg.id&&t.status==="checked-out");
+          return`<div class="sgc${isMine?`" style="border-color:${sg.color}`:""}">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;gap:6px;flex-wrap:wrap">
+              ${tpill(sg,false)}${isMine?'<span class="badge team">my team</span>':""}<span style="font-family:monospace;font-size:10px;color:var(--tx2)">${sg.code}</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx2);margin-bottom:5px">${sg.description}${sgOut.length?` &middot; <span style="color:#854F0B">${sgOut.length} out</span>`:""}</div>
+            <div style="display:flex;gap:3px;flex-wrap:wrap">${sgM.map(m=>`<div class="uav ${m.av}" title="${m.name}" style="width:20px;height:20px;font-size:8px">${m.initials}</div>`).join("")}</div>
+          </div>`;
+        }).join("")+"</div>":""}
+      ${cm?`<div style="margin-top:10px"><button class="btn sm ghost" onclick="S.modal='editGrp';S.md={gid:${g.id}};render()">Manage members</button></div>`:""}
+    </div>`;
+  }).join("");
+}
+
+function renderTeams(){
+  const mySubs=db.subgroups.filter(sg=>sg.members.includes(CU.id)||sg.createdBy===CU.id);
+  const myGrps=db.groups.filter(g=>g.members.includes(CU.id));
+  if(!mySubs.length) return`<div class="empty" style="padding:28px 16px">
+    <div style="font-size:14px;margin-bottom:5px">No teams yet</div>
+    <div style="font-size:12px;color:var(--tx3);margin-bottom:14px">Teams can check out tools and toolboxes as a group.</div>
+    ${myGrps.length?'<button class="btn pri" onclick="S.modal=\'createTeam\';render()">+ Create a team</button>':'<div style="font-size:12px;color:var(--tx3)">Join a class group first.</div>'}
+    <button class="btn sm ghost" style="margin-left:8px" onclick="S.modal='joinTeam';render()">Join with code</button>
+  </div>`;
+  return`<div style="display:flex;justify-content:flex-end;gap:6px;margin-bottom:12px">
+    <button class="btn ghost" onclick="S.modal='joinTeam';render()">Join with code</button>
+    ${myGrps.length?'<button class="btn pri" onclick="S.modal=\'createTeam\';render()">+ Create team</button>':""}
+  </div>`
+  +mySubs.map(sg=>{
+    const pg=db.groups.find(g=>g.id===sg.parentGroup);
+    const sgM=db.users.filter(u=>sg.members.includes(u.id));
+    const sgItems=allItems().filter(t=>t.coTeam===sg.id&&t.status==="checked-out");
+    const sgMiss=allItems().filter(t=>(t.sub===sg.id||t.coTeam===sg.id)&&t.status==="missing");
+    const isC=sg.createdBy===CU.id;
+    return`<div class="gc" style="border-left:3px solid ${sg.color};border-radius:0 var(--rl) var(--rl) 0">
+      <div class="gc-hd">${tpill(sg,false)}${isC?'<span class="badge team">creator</span>':""}<span class="gc-code">${sg.code}</span></div>
+      <div class="gc-meta">${sg.description}${pg?" &middot; "+pg.name:""}${sgItems.length?` &middot; <span style="color:#854F0B">${sgItems.length} item${sgItems.length>1?"s":""} out`:""}${sgMiss.length?` &middot; <span style="color:#A32D2D">${sgMiss.length} missing</span>`:""}</div>
+      <div class="mchips" style="margin-bottom:10px">${sgM.map(m=>`<div class="mchip"><div class="uav ${m.av}" style="width:16px;height:16px;font-size:8px">${m.initials}</div>${m.name}</div>`).join("")}</div>
+      <div style="background:var(--bg2);border-radius:var(--r);padding:10px 12px">
+        <div style="font-size:10px;color:var(--tx3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px">Held by this team (${sgItems.length})</div>
+        ${sgItems.length?sgItems.map(t=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--bd);font-size:12px;color:var(--tx)">${t.name}${t.cat==="Toolbox"?' <span style="font-size:9px;background:var(--acc2);color:var(--acc3);padding:1px 4px;border-radius:3px">box</span>':""}<span style="font-size:11px;color:var(--tx2)">${t.location}</span></div>`).join("")
+          :`<div style="font-size:12px;color:var(--tx2)">Nothing checked out.</div>`}
+        ${sgMiss.length?`<div style="margin-top:7px;padding:6px 9px;background:#FCEBEB;border-radius:var(--r);font-size:11px;color:#A32D2D">Missing: ${sgMiss.map(t=>t.name).join(", ")}</div>`:""}
+      </div>
+      ${isC?`<div style="margin-top:10px;display:flex;gap:5px"><button class="btn sm" onclick="S.modal='editTeam';S.md={sgId:${sg.id}};render()">Manage</button><button class="btn sm bad" onclick="S.modal='disbandTeam';S.md={sgId:${sg.id}};render()">Disband</button></div>`:""}
+    </div>`;
+  }).join("");
+}
+
+/* USERS */
+function renderUsers(){
+  return`<div class="ph"><div class="ph-title">Users</div><div class="ph-acts"><button class="btn pri" onclick="S.modal='inviteUser';render()">+ Invite</button></div></div>
+  <div class="user-list">${db.users.map(u=>{
+    const uT=db.subgroups.filter(sg=>sg.members.includes(u.id));
+    const held=allItems().filter(t=>t.coBy===u.id);
+    return`<div class="user-row"><div class="uav ${u.av}">${u.initials}</div><div style="flex:1">
+      <div style="font-size:13px;font-weight:500;color:var(--tx)">${u.name}${u.id===CU.id?' <span style="font-size:10px;color:var(--tx3)">(you)</span>':""}</div>
+      <div style="font-size:11px;color:var(--tx2);display:flex;align-items:center;gap:5px;flex-wrap:wrap">${u.email}${uT.length?" &middot; "+uT.map(sg=>tpill(sg,true)).join(""):""}${held.length?` &middot; <span style="color:#854F0B">${held.length} out</span>`:""}</div>
+    </div><span class="badge ${u.role}">${u.role}</span></div>`;
+  }).join("")}</div>`;
+}
+
+/* MAP */
+function renderMap(){
+  return`<div class="ph"><div class="ph-title">Station map</div></div>
+  <div class="map-grid">${Object.entries(db.zones).map(([zId,zName])=>{
+    const zt=allItems().filter(t=>t.zone===zId);
+    const miss=zt.some(t=>t.status==="missing");
+    const isSel=S.sel&&findItem(S.sel)&&findItem(S.sel).zone===zId;
+    return`<div class="zone${miss?" zm":isSel?" zh":""}">
+      <div class="zone-name">${zName}</div>
+      ${zt.map(t=>{
+        const team=t.coTeam?db.subgroups.find(sg=>sg.id===t.coTeam):null;
+        return`<div class="zone-item" style="color:${t.status==="missing"?"#A32D2D":t.status==="checked-out"?"#854F0B":"var(--tx2)"}">${t.name}${t.cat==="Toolbox"?" [box]":""}${t.status==="missing"?" &#9888;":""}${team?" — "+team.name:t.status==="checked-out"?" &#9679;":""}</div>`;
+      }).join("")}
+    </div>`;
+  }).join("")}</div>
+  <div style="margin-top:10px;display:flex;gap:12px;font-size:11px;color:var(--tx2)"><span>&#9679; checked out</span><span style="color:#A32D2D">&#9888; missing</span></div>`;
+}
+
+/* MODALS */
+function renderModal(){
+  const M=S.md;
+  if(S.modal==="profile"){
+    const uT=db.subgroups.filter(sg=>sg.members.includes(CU.id));
+    const tOut=uT.flatMap(sg=>allItems().filter(t=>t.coTeam===sg.id&&t.status==="checked-out").map(t=>({tool:t,team:sg})));
+    return`<div class="modal"><div class="modal-title">My profile</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <div class="uav ${CU.av}" style="width:40px;height:40px;font-size:14px">${CU.initials}</div>
+        <div><div style="font-size:14px;font-weight:500;color:var(--tx)">${CU.name}</div><div style="font-size:12px;color:var(--tx2)">${CU.email}</div><span class="badge ${CU.role}">${CU.role}</span></div>
+      </div>
+      <div style="font-size:11px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px">Team items out</div>
+      ${tOut.length?tOut.map(e=>`<div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">${tpill(e.team,true)}<span style="font-size:12px;color:var(--tx)">${e.tool.name}</span></div>`).join(""):`<div style="font-size:12px;color:var(--tx2);margin-bottom:12px">None</div>`}
+      <div class="modal-foot"><button class="btn" onclick="closeModal()">Close</button></div>
+    </div>`;
+  }
+  if(S.modal==="checkout"){
+    const t=findItem(S.sel);
+    const myTeams=db.subgroups.filter(sg=>sg.members.includes(CU.id));
+    return`<div class="modal"><div class="modal-title">Check out — ${t?t.name:""}</div>
+      ${t&&t.cat==="Toolbox"?`<div style="font-size:12px;color:var(--tx2);padding:8px 10px;background:var(--bg2);border-radius:var(--r);margin-bottom:12px">Contains: ${t.contents.join(", ")}</div>`:""}
+      <div style="font-size:12px;color:var(--tx2);margin-bottom:9px;font-weight:500">Who is checking this out?</div>
+      <div style="display:flex;gap:7px;margin-bottom:12px">
+        <button class="btn" style="flex:1;justify-content:center" id="co-t-btn" onclick="document.getElementById('co-t').style.display='block';document.getElementById('co-p').style.display='none';this.classList.add('pri');document.getElementById('co-p-btn').classList.remove('pri')">As a team</button>
+        <button class="btn" style="flex:1;justify-content:center" id="co-p-btn" onclick="document.getElementById('co-t').style.display='none';document.getElementById('co-p').style.display='block';this.classList.add('pri');document.getElementById('co-t-btn').classList.remove('pri')">Personally</button>
+      </div>
+      <div id="co-t"><div class="field"><label>Team</label><select id="co-sub">${myTeams.length?myTeams.map(sg=>`<option value="${sg.id}">${sg.name}</option>`).join(""):"<option disabled>No teams</option>"}</select></div></div>
+      <div id="co-p" style="display:none;font-size:12px;color:var(--tx2);padding:10px;background:var(--bg2);border-radius:var(--r);margin-bottom:10px">Checking out as <strong>${CU.name}</strong>.</div>
+      <div class="modal-foot"><button class="btn pri" onclick="doCheckout(true)">Team checkout</button><button class="btn" onclick="doCheckout(false)">Personal</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div>`;
+  }
+  if(S.modal==="addTool"){
+    return`<div class="modal"><div class="modal-title">Add tool</div>
+      <div class="field"><label>Name</label><input id="nt-n" placeholder="e.g. Band saw"></div>
+      <div class="field-row">
+        <div class="field"><label>Category</label><select id="nt-c"><option>Power</option><option>Hand</option><option>Clamping</option><option>Measuring</option><option>Safety</option><option>Toolbox</option></select></div>
+        <div class="field"><label>Zone</label><select id="nt-z">${Object.entries(db.zones).map(([k,v])=>`<option value="${k}">${k} — ${v}</option>`).join("")}</select></div>
+      </div>
+      <div class="field"><label>Shelf / location</label><input id="nt-s" placeholder="e.g. Shelf 2"></div>
+      <div id="nt-err" class="err"></div>
+      <div class="modal-foot"><button class="btn pri" onclick="doAddTool()">Add</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div>`;
+  }
+  if(S.modal==="delTool"){
+    const t=findItem(M.id);
+    return`<div class="modal"><div class="modal-title">Delete item</div>
+      <div style="font-size:13px;color:var(--tx);margin-bottom:6px">Remove <strong>${t?t.name:""}</strong>?</div>
+      <div style="font-size:12px;color:var(--tx2);margin-bottom:14px">This cannot be undone.</div>
+      <div class="modal-foot"><button class="btn bad" onclick="doDelete(${M.id})">Delete</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div>`;
+  }
+  if(S.modal==="createTeam"){
+    const myGrps=db.groups.filter(g=>g.members.includes(CU.id));
+    return`<div class="modal"><div class="modal-title">Create a team</div>
+      <div style="font-size:12px;color:var(--tx2);margin-bottom:12px">Teams can check out tools as a group. Share the code with teammates.</div>
+      <div class="field"><label>Team name</label><input id="sg-n" placeholder="e.g. Team Maple"></div>
+      <div class="field"><label>Team code</label><input id="sg-c" placeholder="e.g. TM-03"></div>
+      <div class="field"><label>Description</label><input id="sg-d" placeholder="e.g. Cabinet project"></div>
+      <div class="field"><label>Class group</label><select id="sg-p">${myGrps.map(g=>`<option value="${g.id}">${g.name}</option>`).join("")}</select></div>
+      <div id="sg-err" class="err"></div>
+      <div class="modal-foot"><button class="btn pri" onclick="doCreateTeam()">Create</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div>`;
+  }
+  if(S.modal==="joinTeam"){
+    return`<div class="modal"><div class="modal-title">Join a team</div>
+      <div class="field"><label>Team code</label><input id="jt-c" placeholder="e.g. TM-01"></div>
+      <div class="hint-box">Available: ${db.subgroups.map(sg=>`<strong>${sg.code}</strong> — ${sg.name}`).join(", ")}</div>
+      <div id="jt-err" class="err" style="margin-top:7px"></div>
+      <div class="modal-foot"><button class="btn pri" onclick="doJoinTeam()">Join</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div>`;
+  }
+  if(S.modal==="editTeam"){
+    const sg=db.subgroups.find(x=>x.id===M.sgId);
+    const pg=db.groups.find(g=>g.id===sg.parentGroup);
+    const elig=pg?db.users.filter(u=>pg.members.includes(u.id)&&!sg.members.includes(u.id)):[];
+    return`<div class="modal"><div class="modal-title">Manage — ${sg.name}</div>`
+      +db.users.filter(u=>sg.members.includes(u.id)).map(u=>`
+        <div class="user-row" style="padding:6px 0"><div class="uav ${u.av}" style="width:26px;height:26px;font-size:10px">${u.initials}</div>
+        <div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--tx)">${u.name}</div></div>
+        <span class="badge ${u.role}">${u.role}</span>
+        ${u.id!==sg.createdBy&&u.id!==CU.id?`<button class="btn sm bad" onclick="removeSGM(${sg.id},${u.id})">Remove</button>`:""}
+        </div>`).join("")
+      +`<div style="margin-top:10px;font-size:11px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px">Add classmate</div>
+      <div style="display:flex;gap:7px"><select id="add-sg-u" style="flex:1;height:34px;padding:0 10px;border:0.5px solid var(--bd2);border-radius:var(--r);background:var(--bg);color:var(--tx);font-size:12px">
+        ${elig.length?elig.map(u=>`<option value="${u.id}">${u.name}</option>`).join(""):"<option disabled>None eligible</option>"}
+      </select><button class="btn pri" onclick="addSGM(${M.sgId})">Add</button></div>
+      <div class="modal-foot"><button class="btn" onclick="closeModal()">Done</button></div>
+    </div>`;
+  }
+  if(S.modal==="disbandTeam"){
+    const sg=db.subgroups.find(x=>x.id===M.sgId);
+    return`<div class="modal"><div class="modal-title">Disband team</div>
+      <div style="font-size:13px;color:var(--tx);margin-bottom:6px">Disband <strong>${sg?sg.name:""}</strong>?</div>
+      <div style="font-size:12px;color:var(--tx2);margin-bottom:14px">All team items will be unassigned.</div>
+      <div class="modal-foot"><button class="btn bad" onclick="doDisband(${M.sgId})">Disband</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div>`;
+  }
+  if(S.modal==="createGrp"){
+    return`<div class="modal"><div class="modal-title">Create class group</div>
+      <div class="field"><label>Name</label><input id="g-n"></div>
+      <div class="field"><label>Class code</label><input id="g-c" placeholder="e.g. WOOD-201"></div>
+      <div class="field"><label>Schedule</label><input id="g-d" placeholder="e.g. Mon/Wed 10am"></div>
+      <div id="g-err" class="err"></div>
+      <div class="modal-foot"><button class="btn pri" onclick="doCreateGrp()">Create</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div>`;
+  }
+  if(S.modal==="joinGrp"){
+    return`<div class="modal"><div class="modal-title">Join a class group</div>
+      <div class="field"><label>Class code</label><input id="jg-c" placeholder="e.g. WOOD-101"></div>
+      <div class="hint-box">Available: ${db.groups.map(g=>`<strong>${g.code}</strong>`).join(", ")}</div>
+      <div id="jg-err" class="err" style="margin-top:7px"></div>
+      <div class="modal-foot"><button class="btn pri" onclick="doJoinGrp()">Join</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div>`;
+  }
+  if(S.modal==="editGrp"){
+    const grp=db.groups.find(g=>g.id===M.gid);
+    return`<div class="modal"><div class="modal-title">Manage — ${grp.name}</div>`
+      +db.users.filter(u=>grp.members.includes(u.id)).map(u=>`
+        <div class="user-row" style="padding:6px 0"><div class="uav ${u.av}" style="width:26px;height:26px;font-size:10px">${u.initials}</div>
+        <div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--tx)">${u.name}</div></div>
+        <span class="badge ${u.role}">${u.role}</span>
+        ${u.id!==grp.instructor&&u.id!==CU.id?`<button class="btn sm bad" onclick="removeGM(${grp.id},${u.id})">Remove</button>`:""}
+        </div>`).join("")
+      +`<div style="margin-top:10px;font-size:11px;font-weight:500;color:var(--tx2);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px">Add user</div>
+      <div style="display:flex;gap:7px"><select id="add-g-u" style="flex:1;height:34px;padding:0 10px;border:0.5px solid var(--bd2);border-radius:var(--r);background:var(--bg);color:var(--tx);font-size:12px">
+        ${db.users.filter(u=>!grp.members.includes(u.id)).map(u=>`<option value="${u.id}">${u.name}</option>`).join("")||"<option disabled>All users are members</option>"}
+      </select><button class="btn pri" onclick="addGM(${M.gid})">Add</button></div>
+      <div class="modal-foot"><button class="btn" onclick="closeModal()">Done</button></div>
+    </div>`;
+  }
+  if(S.modal==="inviteUser"){
+    return`<div class="modal"><div class="modal-title">Invite user</div>
+      <div class="field"><label>Full name</label><input id="iv-n"></div>
+      <div class="field"><label>Email</label><input id="iv-e" type="email"></div>
+      <div class="field"><label>Role</label><select id="iv-r"><option value="student">Student</option><option value="instructor">Instructor</option></select></div>
+      <div id="iv-err" class="err"></div><div id="iv-ok" class="ok"></div>
+      <div class="modal-foot"><button class="btn pri" onclick="doInvite()">Add user</button><button class="btn ghost" onclick="closeModal()">Cancel</button></div>
+    </div>`;
+  }
+  return"";
+}
+
+function closeModal(){S.modal=null;S.md={};render()}
+function reModal(){
+  const ex=document.getElementById("mroot");if(ex)ex.remove();
+  if(S.modal){const ov=document.createElement("div");ov.id="mroot";ov.className="modal-bg";ov.innerHTML=renderModal();ov.addEventListener("click",e=>{if(e.target===ov)closeModal()});document.getElementById("root").appendChild(ov)}
+}
+
+/* ACTIONS */
+function doLogin(){const u=db.users.find(x=>x.email===(document.getElementById("em")||{}).value);if(!u){document.getElementById("aerr").textContent="Account not found.";return}CU=u;render()}
+function quickLogin(id){CU=db.users.find(u=>u.id===id);render()}
+function doCheckout(asTeam){
+  const t=findItem(S.sel);if(!t)return;
+  let team=null;
+  if(asTeam){const v=(document.getElementById("co-sub")||{}).value;team=v?db.subgroups.find(g=>g.id===parseInt(v)):null;if(!team){toast("Select a team first.");return}}
+  const myGrps=db.groups.filter(g=>g.members.includes(CU.id));
+  const grp=myGrps.length?myGrps[0]:null;
+  t.status="checked-out";t.coBy=CU.id;t.coTeam=team?team.id:null;
+  t.lastUser=team?team.name:CU.name;t.lastUserId=team?null:CU.id;
+  t.group=grp?grp.id:null;t.sub=team?team.id:null;
+  alog({type:"checkout",toolId:t.id,toolName:t.name,userId:CU.id,userName:CU.name,teamId:team?team.id:null,teamName:team?team.name:null,group:grp?grp.name:null});
+  toast((team?team.name:CU.name)+" checked out "+t.name);closeModal();
+}
+function returnItem(id){const t=findItem(id);if(t){const team=t.coTeam?db.subgroups.find(sg=>sg.id===t.coTeam):null;alog({type:"return",toolId:t.id,toolName:t.name,userId:CU.id,userName:CU.name,teamId:team?team.id:null,teamName:team?team.name:null,group:null});t.status="available";t.coBy=null;t.coTeam=null;t.group=null;t.sub=null;toast(t.name+" returned");}S.sel=null;render()}
+function markMissing(id){const t=findItem(id);if(t){t.status="missing";alog({type:"missing",toolId:t.id,toolName:t.name,userId:CU.id,userName:CU.name,teamId:null,teamName:null,group:null});toast(t.name+" flagged missing");}S.sel=null;render()}
+function markFound(id){const t=findItem(id);if(t){t.status="available";t.coBy=null;t.coTeam=null;t.group=null;t.sub=null;alog({type:"found",toolId:t.id,toolName:t.name,userId:CU.id,userName:CU.name,teamId:null,teamName:null,group:null});toast(t.name+" marked found");}S.sel=null;render()}
+function doDelete(id){const arr=db.tools.find(x=>x.id===id)?db.tools:db.toolboxes;const t=arr.find(x=>x.id===id);if(t){alog({type:"deleted",toolId:t.id,toolName:t.name,userId:CU.id,userName:CU.name,teamId:null,teamName:null,group:null});arr.splice(arr.indexOf(t),1);toast(t.name+" deleted");}S.sel=null;closeModal()}
+function doAddTool(){const name=((document.getElementById("nt-n")||{}).value||"").trim();if(!name){document.getElementById("nt-err").textContent="Enter a name.";return}const cat=(document.getElementById("nt-c")||{}).value,zone=(document.getElementById("nt-z")||{}).value,shelf=((document.getElementById("nt-s")||{}).value||"").trim();const id=allItems().reduce((m,t)=>Math.max(m,t.id),0)+1;const obj={id,name,cat,location:"Station "+zone+" – "+(shelf||"Shelf 1"),zone,status:"available",lastUser:null,lastUserId:null,coBy:null,coTeam:null,group:null,sub:null};if(cat==="Toolbox"){obj.contents=[];db.toolboxes.push(obj)}else db.tools.push(obj);alog({type:"added",toolId:id,toolName:name,userId:CU.id,userName:CU.name,teamId:null,teamName:null,group:null});toast(name+" added");closeModal()}
+function doCreateTeam(){const name=((document.getElementById("sg-n")||{}).value||"").trim(),code=((document.getElementById("sg-c")||{}).value||"").trim().toUpperCase(),desc=((document.getElementById("sg-d")||{}).value||"").trim(),pid=parseInt(((document.getElementById("sg-p")||{}).value));const err=document.getElementById("sg-err");if(!name){err.textContent="Enter a name.";return}if(!code){err.textContent="Enter a code.";return}if(db.subgroups.find(sg=>sg.code===code)){err.textContent="Code in use.";return}const pg=db.groups.find(g=>g.id===pid);if(!pg||!pg.members.includes(CU.id)){err.textContent="Join the class first.";return}const id=db.subgroups.reduce((m,sg)=>Math.max(m,sg.id),0)+1;db.subgroups.push({id,name,code,parentGroup:pid,createdBy:CU.id,color:SC[id%SC.length],members:[CU.id],description:desc});toast("Team created!");closeModal()}
+function doJoinTeam(){const code=((document.getElementById("jt-c")||{}).value||"").trim().toUpperCase(),sg=db.subgroups.find(x=>x.code===code);if(!sg){document.getElementById("jt-err").textContent="Code not found.";return}if(sg.members.includes(CU.id)){document.getElementById("jt-err").textContent="Already a member.";return}const pg=db.groups.find(g=>g.id===sg.parentGroup);if(!pg||!pg.members.includes(CU.id)){document.getElementById("jt-err").textContent="Join the parent class first.";return}sg.members.push(CU.id);toast("Joined "+sg.name+"!");closeModal()}
+function doDisband(sgId){const sg=db.subgroups.find(x=>x.id===sgId);if(sg){allItems().filter(t=>t.sub===sgId||t.coTeam===sgId).forEach(t=>{t.sub=null;t.coTeam=null});db.subgroups.splice(db.subgroups.indexOf(sg),1);toast(sg.name+" disbanded");}closeModal()}
+function addSGM(sgId){const sel=document.getElementById("add-sg-u");if(!sel||!sel.value)return;const uid=parseInt(sel.value),sg=db.subgroups.find(x=>x.id===sgId);if(sg&&!sg.members.includes(uid))sg.members.push(uid);S.md={sgId};reModal()}
+function removeSGM(sgId,uid){const sg=db.subgroups.find(x=>x.id===sgId);if(sg)sg.members=sg.members.filter(x=>x!==uid);S.md={sgId};reModal()}
+function addGM(gid){const sel=document.getElementById("add-g-u");if(!sel||!sel.value)return;const uid=parseInt(sel.value),grp=db.groups.find(g=>g.id===gid),u=db.users.find(x=>x.id===uid);if(grp&&u&&!grp.members.includes(uid)){grp.members.push(uid);u.groups.push(gid);}S.md={gid};reModal()}
+function removeGM(gid,uid){const grp=db.groups.find(g=>g.id===gid),u=db.users.find(x=>x.id===uid);if(grp)grp.members=grp.members.filter(x=>x!==uid);if(u)u.groups=u.groups.filter(x=>x!==gid);S.md={gid};reModal()}
+function doCreateGrp(){const name=((document.getElementById("g-n")||{}).value||"").trim(),code=((document.getElementById("g-c")||{}).value||"").trim().toUpperCase(),desc=((document.getElementById("g-d")||{}).value||"").trim();if(!name){document.getElementById("g-err").textContent="Enter a name.";return}if(!code){document.getElementById("g-err").textContent="Enter a code.";return}if(db.groups.find(g=>g.code===code)){document.getElementById("g-err").textContent="Code in use.";return}const id=db.groups.reduce((m,g)=>Math.max(m,g.id),0)+1;db.groups.push({id,name,code,color:GC[id%GC.length],instructor:CU.id,members:[CU.id],description:desc});toast("Group created!");closeModal()}
+function doJoinGrp(){const code=((document.getElementById("jg-c")||{}).value||"").trim().toUpperCase(),grp=db.groups.find(g=>g.code===code);if(!grp){document.getElementById("jg-err").textContent="Code not found.";return}if(grp.members.includes(CU.id)){document.getElementById("jg-err").textContent="Already a member.";return}grp.members.push(CU.id);CU.groups.push(grp.id);toast("Joined "+grp.name+"!");closeModal()}
+function doInvite(){const name=((document.getElementById("iv-n")||{}).value||"").trim(),email=((document.getElementById("iv-e")||{}).value||"").trim(),role=(document.getElementById("iv-r")||{}).value,err=document.getElementById("iv-err"),ok=document.getElementById("iv-ok");if(!name){err.textContent="Enter a name.";return}if(!email||db.users.find(u=>u.email===email)){err.textContent="Invalid or taken email.";return}const id=db.users.reduce((m,u)=>Math.max(m,u.id),0)+1,ini=name.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase();db.users.push({id,name,email,role,groups:[],initials:ini,av:avCls(id)});ok.textContent=name+" added!";setTimeout(closeModal,1200)}
+
+setTheme("default");
+render();
+</script>
